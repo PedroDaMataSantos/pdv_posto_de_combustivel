@@ -11,8 +11,8 @@ import java.util.Date;
 public class PdvpostocombustivelApplication {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(PdvpostocombustivelApplication.class, args);
-
+		SpringApplication.run(PdvpostocombustivelApplication.class, args);
+		/*
 		Pessoa pessoa1 = new Pessoa();
 		pessoa1.setNomeCompleto("Pedro");
 		pessoa1.setCpfCnpj("70058865188");
@@ -43,6 +43,8 @@ public class PdvpostocombustivelApplication {
 		System.out.println("Nome Completo:" + pessoa2.getNomeCompleto());
 		System.out.println("CPF/CNPJ:" + pessoa2.getCpfCnpj());
 		System.out.println("Numero CTPs:" + pessoa2.getNumeroCtps());
+
+		 */
 	}
 
 }

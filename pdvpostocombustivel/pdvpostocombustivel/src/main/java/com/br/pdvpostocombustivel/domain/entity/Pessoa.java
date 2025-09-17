@@ -1,15 +1,32 @@
 package com.br.pdvpostocombustivel.domain.entity;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import java.time.LocalDate;
 
+@Entity
+@Table(name = "pessoa")
 public class Pessoa {
-    private String nomeCompleto;
-    private String cpfCnpj;
-    private Long numeroCtps;
-    private Date dataNascimento;
 
-    public Pessoa(String nomeCompleto, String cpfCnpj, Long numeroCtps, Date dataNascimento) {
-        super();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 200, nullable = false)
+    private String nomeCompleto;
+
+    @Column(length = 14, nullable = false)
+    private String cpfCnpj;
+
+    @Column(length = 12)
+    private Long numeroCtps;
+
+    @Column(length = 10, nullable = false)
+    private LocalDate dataNascimento;
+
+    public Pessoa(String nomeCompleto,
+                  String cpfCnpj,
+                  Long numeroCtps,
+                  LocalDate dataNascimento) {
         this.numeroCtps = numeroCtps;
         this.dataNascimento = dataNascimento;
         this.nomeCompleto = nomeCompleto;
@@ -18,6 +35,14 @@ public class Pessoa {
 
     public Pessoa() {
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNomeCompleto() {
@@ -38,10 +63,10 @@ public class Pessoa {
     public void setNumeroCtps(Long numeroCtps) {
         this.numeroCtps = numeroCtps;
     }
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
