@@ -1,5 +1,6 @@
 package com.br.pdvpostocombustivel.domain.entity;
 
+import com.br.pdvpostocombustivel.enums.TipoPessoa;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -11,31 +12,35 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 200, nullable = false)
+    @Column(name = "nome_completo", length = 200, nullable = false)
     private String nomeCompleto;
 
-    @Column(length = 14, nullable = false)
+    @Column(name = "cpf_cnpj", length = 14, nullable = false)
     private String cpfCnpj;
 
-    @Column(length = 12)
+    @Column(name = "numero_ctps", length = 12)
     private Long numeroCtps;
 
-    @Column(length = 10, nullable = false)
+    @Column(name = "data_nascimento", length = 10, nullable = false)
     private LocalDate dataNascimento;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_pessoa", nullable = false, length = 15)
+    private TipoPessoa tipoPessoa;
 
     public Pessoa(String nomeCompleto,
                   String cpfCnpj,
                   Long numeroCtps,
-                  LocalDate dataNascimento) {
+                  LocalDate dataNascimento,
+                  TipoPessoa tipoPessoa) {
         this.numeroCtps = numeroCtps;
         this.dataNascimento = dataNascimento;
         this.nomeCompleto = nomeCompleto;
         this.cpfCnpj = cpfCnpj;
+        this.tipoPessoa = tipoPessoa;
     }
 
-    public Pessoa() {
-
-    }
+    public Pessoa() {}
 
     public Long getId() {
         return id;
@@ -68,6 +73,14 @@ public class Pessoa {
     }
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+    public TipoPessoa getTipoPessoa() {
+        return tipoPessoa;
+    }
+
+    public void setTipoPessoa(TipoPessoa tipoPessoa) {
+        this.tipoPessoa = tipoPessoa;
     }
 
 }

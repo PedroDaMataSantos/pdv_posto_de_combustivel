@@ -107,7 +107,8 @@ public class PessoaService {
                 req.nomeCompleto(),
                 req.cpfCnpj(),
                 req.numeroCtps(),
-                req.dataNascimento()
+                req.dataNascimento(),
+                req.tipoPessoa()
         );
     }
 
