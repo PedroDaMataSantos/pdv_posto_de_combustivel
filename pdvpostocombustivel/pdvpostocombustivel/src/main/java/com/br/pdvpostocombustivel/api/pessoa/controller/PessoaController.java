@@ -1,8 +1,10 @@
-package com.br.pdvpostocombustivel.api.pessoa;
+package com.br.pdvpostocombustivel.api.pessoa.controller;
 
 
 import com.br.pdvpostocombustivel.api.pessoa.dto.PessoaRequest;
 import com.br.pdvpostocombustivel.api.pessoa.dto.PessoaResponse;
+import com.br.pdvpostocombustivel.api.pessoa.service.PessoaService;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;

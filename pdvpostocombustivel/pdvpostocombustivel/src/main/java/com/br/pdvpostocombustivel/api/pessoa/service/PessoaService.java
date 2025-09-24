@@ -1,4 +1,4 @@
-package com.br.pdvpostocombustivel.api.pessoa;
+package com.br.pdvpostocombustivel.api.pessoa.service;
 
 
 import com.br.pdvpostocombustivel.api.pessoa.dto.PessoaRequest;
