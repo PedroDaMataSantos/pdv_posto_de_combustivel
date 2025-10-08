@@ -53,6 +53,9 @@ public class Custo {
         this.margemLucro = margemLucro;
         this.dataProcessamento = dataProcessamento;
     }
+    public Custo() {
+
+    }
 
     // getter
 

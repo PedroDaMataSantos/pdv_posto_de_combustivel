@@ -26,6 +26,9 @@ public class Contato {
         this.email = email;
         this.endereco = endereco;
     }
+    public Contato() {
+
+    }
     //getters
     public String getTelefone() {
         return telefone;

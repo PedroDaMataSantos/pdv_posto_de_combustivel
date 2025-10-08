@@ -30,6 +30,10 @@ public class Acesso {
         this.senha=senha;
     }
 
+    public Acesso(){
+
+    }
+
     //getters
 
     public String getUsuario(){

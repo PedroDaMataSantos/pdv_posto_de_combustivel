@@ -45,6 +45,9 @@ public class Estoque {
     this.dataValidade=dataValidade;
     }
 
+    public Estoque(){
+
+    }
     //metodos
 
     public void Abastecer(BigDecimal quantidade) {

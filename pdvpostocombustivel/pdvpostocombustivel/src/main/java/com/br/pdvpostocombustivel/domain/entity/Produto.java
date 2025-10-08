@@ -31,6 +31,9 @@ public class Produto {
         this.categoria = categoria;
         this.marca = marca;
     }
+    public Produto() {
+
+    }
     //getters
     public String getNome() {
         return nome;

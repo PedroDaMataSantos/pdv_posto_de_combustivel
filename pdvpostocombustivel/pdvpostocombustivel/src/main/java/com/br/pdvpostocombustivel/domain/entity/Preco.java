@@ -35,6 +35,9 @@ public class Preco {
         this.dataAlteracao = dataAlteracao;
         this.horaAlteracao = horaAlteracao;
     }
+    public Preco() {
+
+    }
     // getters
     public BigDecimal getValor() {
         return valor;
