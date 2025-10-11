@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 // Para entrada
 public record PessoaRequest(
+        Long id,
         String nomeCompleto,
         String cpfCnpj,
         Long numeroCtps,

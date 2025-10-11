@@ -116,10 +116,21 @@ public class PessoaService {
 
     private PessoaResponse toResponse(Pessoa p) {
         return new PessoaResponse(
+                p.getId(),
                 p.getNomeCompleto(),
                 p.getCpfCnpj(),
                 p.getNumeroCtps(),
-                p.getDataNascimento()
+                p.getDataNascimento(),
+                p.getTipoPessoa()
         );
+
+    }
+    public boolean excluirPessoa(Long id) {
+        if (repository.existsById(id)) {  // verifica se existe
+            repository.deleteById(id);    // exclui
+            return true;                  // sucesso
+        }
+        return false;                     // não encontrado
     }
 }
+

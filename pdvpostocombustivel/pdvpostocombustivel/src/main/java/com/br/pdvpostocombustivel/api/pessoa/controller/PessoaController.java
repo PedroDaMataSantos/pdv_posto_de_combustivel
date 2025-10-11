@@ -8,6 +8,7 @@ import com.br.pdvpostocombustivel.api.pessoa.service.PessoaService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -57,7 +58,8 @@ public class PessoaController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        service.delete(id);
-    }
-}
+            service.delete(id);
+
+            }
+        }
 
