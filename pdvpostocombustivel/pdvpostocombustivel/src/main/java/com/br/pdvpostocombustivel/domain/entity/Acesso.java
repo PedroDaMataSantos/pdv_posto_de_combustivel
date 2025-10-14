@@ -17,44 +17,51 @@ public class Acesso {
 
     //atributos
 
-    @Column(length = 50,nullable = false)
+    @Column(length = 50, nullable = false)
     private String usuario;
-    
-    @Column(length = 10,nullable = false)
+
+    @Column(length = 10, nullable = false)
     private String senha;
 
     //construtor 
 
-    public Acesso(String usuario,String senha){
-        this.usuario=usuario;
-        this.senha=senha;
+    public Acesso(String usuario, String senha) {
+        this.usuario = usuario;
+        this.senha = senha;
     }
 
-    public Acesso(){
+    public Acesso() {
 
     }
 
     //getters
 
-    public String getUsuario(){
+    public String getUsuario() {
         return usuario;
 
     }
-    public String senha(){
+
+    public String senha() {
         return senha;
 
     }
 
     //setters
 
-    public void setUsuario(String usuario){
-        this.usuario=usuario;
-    }
-    public void setSenha(String senha){
-        this.senha=senha;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

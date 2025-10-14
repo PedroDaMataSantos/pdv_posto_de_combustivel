@@ -25,8 +25,6 @@ public class Custo {
     @Column(nullable = false)
     private Double imposto;
 
-    @Column(nullable = false)
-    private Double frete;
 
     @Column(nullable = false)
     private Double custoFixo;
@@ -43,13 +41,11 @@ public class Custo {
 
     // contrutor
 
-    public Custo(Double imposto, Double frete, Double custoFixo, Double custoVariavel, Double margemLucro,
+    public Custo(Double imposto,  Double custoVariavel,Double custoFixo, Double margemLucro,
             Date dataProcessamento) {
         this.imposto = imposto;
-        this.frete = frete;
+        this.custoVariavel = custoVariavel;
         this.custoFixo = custoFixo;
-        this.custoVariavel = custoVariavel;
-        this.custoVariavel = custoVariavel;
         this.margemLucro = margemLucro;
         this.dataProcessamento = dataProcessamento;
     }
@@ -57,14 +53,11 @@ public class Custo {
 
     }
 
+
     // getter
 
     public Double getImposto() {
         return imposto;
-    }
-
-    public Double getFrete() {
-        return frete;
     }
 
     public Double getCustoFixo() {
@@ -83,14 +76,14 @@ public class Custo {
         return dataProcessamento;
     }
 
+    public Long getId() {return id;}
+
+
     // setter
     public void setImposto(Double imposto) {
         this.imposto = imposto;
     }
 
-    public void setFrete(Double frete) {
-        this.frete = frete;
-    }
 
     public void setCustoFixo(Double custoFixo) {
         this.custoFixo = custoFixo;
@@ -107,6 +100,8 @@ public class Custo {
     public void setDataProcessamento(Date dataProcessamento) {
         this.dataProcessamento = dataProcessamento;
     }
+
+    public void setId(Long id) {this.id = id;}
 
     // FIM
 

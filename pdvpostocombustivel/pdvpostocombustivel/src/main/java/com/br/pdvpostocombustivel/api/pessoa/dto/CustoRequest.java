@@ -5,12 +5,13 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
 
 public record CustoRequest(
-    Double imposto,
-    Double frete,
-    Double custoFixo,
-    Double custoVariavel,
-    Double margemLucro,
-    Date dataProcessamento 
-    ) {}
+        Double imposto,
+        Double custoVariavel,
+        Double custoFixo,
+        Double margemLucro,
+        Date dataProcessameto
+) {
+}

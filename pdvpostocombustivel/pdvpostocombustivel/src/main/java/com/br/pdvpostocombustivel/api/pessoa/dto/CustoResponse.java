@@ -1,12 +1,12 @@
 package com.br.pdvpostocombustivel.api.pessoa.dto;
+import java.util.Date;
 
 public record CustoResponse(
-    Double imposto,
-    Double frete,
-    Double custoFixo,
-    Double custoVariavel,
-    Double margemLucro,
-    String dataProcessamento
+        Long id,
+        Double imposto,
+        Double custoVarivel,
+        Double custoFixo,
+        Double margemLucro,
+        Date dataProcessamento
 ) {
-
 }
