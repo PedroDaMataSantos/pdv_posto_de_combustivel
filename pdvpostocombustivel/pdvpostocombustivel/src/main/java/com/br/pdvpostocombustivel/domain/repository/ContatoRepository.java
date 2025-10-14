@@ -1,15 +1,16 @@
 package com.br.pdvpostocombustivel.domain.repository;
-import java.util.Optional;
+
 import com.br.pdvpostocombustivel.domain.entity.Contato;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ContatoRepository {
+import java.util.Optional;
 
-    Optional<Contato>findByEmail(String email);
-    Optional<Contato>findByTelefone(Long telefone);
+public interface ContatoRepository extends JpaRepository<Contato, Long> {
+    Optional<Contato> findByTelefone(String telefone);
+
+    Optional<Contato> findByEmail(String email);
+
+    boolean existsByTelefone(String telefone);
 
     boolean existsByEmail(String email);
-    boolean existsByTelefone(Long telefone);
-
-
-
 }

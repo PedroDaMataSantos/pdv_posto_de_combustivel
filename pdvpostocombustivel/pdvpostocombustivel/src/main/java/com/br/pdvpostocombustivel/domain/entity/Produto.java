@@ -1,64 +1,103 @@
 package com.br.pdvpostocombustivel.domain.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "produto")
 public class Produto {
-    //atributos
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    
-    @Column(length = 100,nullable = false)
+
+    @Column(length = 30, nullable = false)
     private String nome;
 
-    @Column(length = 100,nullable = false)
+    @Column(length = 200, nullable = false)
+    private String referencia;
+
+    @Column(length = 200, nullable = false)
     private String fornecedor;
 
-    @Column(length = 50,nullable = false)
+    @Column(length = 50, nullable = false)
     private String categoria;
-    
-    @Column(length = 100,nullable = false)
+
+    @Column(length = 50, nullable = false)
     private String marca;
 
-    //construtor
-    public Produto(String nome, String fornecedor, String categoria, String marca) {
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_combustivel", nullable = false)
+    
+    private TipoProduto tipo;
+
+    public Produto (String nome, String referencia, String fornecedor, String categoria, String marca, TipoProduto tipo) {
         this.nome = nome;
+        this.referencia = referencia;
         this.fornecedor = fornecedor;
         this.categoria = categoria;
         this.marca = marca;
+        this.tipo = tipo;
     }
-    public Produto() {
+
+    public Produto () {
 
     }
-    //getters
-    public String getNome() {
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome () {
         return nome;
     }
-    public String getFornecedor() {
+
+    public String getReferencia () {
+        return referencia;
+    }
+
+    public String getFornecedor () {
         return fornecedor;
     }
-    public String getCategoria() {
+
+    public String getCategoria () {
         return categoria;
     }
-    public String getMarca() {
+
+    public String getMarca () {
         return marca;
     }
-    //setters
-    public void setNome(String nome) {
+
+    public TipoProduto getTipo() {
+        return tipo;
+    }
+
+    public void setNome (String nome) {
         this.nome = nome;
     }
-    public void setFornecedor(String fornecedor) {
+
+    public void setReferencia (String referencia) {
+        this.referencia = referencia;
+    }
+
+    public void setFornecedor (String fornecedor) {
         this.fornecedor = fornecedor;
     }
-    public void setCategoria(String categoria) {
+
+    public void setCategoria (String categoria) {
         this.categoria = categoria;
     }
+
     public void setMarca(String marca) {
         this.marca = marca;
     }
-    //fim
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTipo(TipoProduto tipo) {
+        this.tipo = tipo;
+    }
 }
