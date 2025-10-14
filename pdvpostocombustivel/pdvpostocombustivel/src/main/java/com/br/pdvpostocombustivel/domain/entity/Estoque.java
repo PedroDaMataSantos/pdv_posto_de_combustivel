@@ -2,6 +2,7 @@ package com.br.pdvpostocombustivel.domain.entity;
 
 //imports
 import java.math.BigDecimal;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,90 +21,87 @@ public class Estoque {
     private Long id;
     // atributos
 
-    @Column(precision = 12,nullable = false)
+    @Column(precision = 12, nullable = false)
     private BigDecimal quantidade;
 
-    @Column(length = 50,nullable = false)
+    @Column(length = 50, nullable = false)
     private String localTanque;
 
-    @Column(length = 50,nullable = false)
+    @Column(length = 50, nullable = false)
     private String localEndereco;
 
-    @Column(length = 50,nullable = false)
-    private String loteFabrica;
-    
-    @Column(length = 10,nullable = false)
-    private String dataValidade;
+    @Column(length = 50, nullable = false)
+    private String loteFabricacao;
+
+    @Column(length = 10, nullable = false)
+    private Date dataValidade;
 
     //construtor
 
-    public Estoque(String localEndereco,String localTanque,String loteFabrica,BigDecimal quantidade,String dataValidade){
-    this.quantidade=quantidade;
-    this.localEndereco=localEndereco;
-    this.localTanque=localTanque;
-    this.loteFabrica=loteFabrica;
-    this.dataValidade=dataValidade;
+    public Estoque(BigDecimal quantidade, String localEndereco, String localTanque, String loteFabricacao, Date dataValidade) {
+        this.quantidade = quantidade;
+        this.localEndereco = localEndereco;
+        this.localTanque = localTanque;
+        this.loteFabricacao = loteFabricacao;
+        this.dataValidade = dataValidade;
     }
 
-    public Estoque(){
+    public Estoque() {
 
     }
-    //metodos
 
-    public void Abastecer(BigDecimal quantidade) {
-        
-        this.quantidade=this.quantidade.add(quantidade);
-        System.out.println("Foi abastecido "+ quantidade+"L. Quantidade atual em estoque " + this.quantidade+"L");
-        
-    }
-    public void Desabastecer(BigDecimal quantidade) {
-
-        this.quantidade=this.quantidade.subtract(quantidade);
-           System.out.println("Foi desabastecido "+ quantidade+"L. Quantidade atual em estoque " + this.quantidade+"L");
-        
-    }
 
     //getters
 
-    public String getLocalEndereco(){
+    public String getLoteEndereco() {
         return localEndereco;
     }
-    public String getLocalTanque(){
+
+    public String getLocalTanque() {
         return localTanque;
     }
-    public String getLotefabrica(){
-        return loteFabrica;
+
+    public String getLoteFabricacao() {
+        return loteFabricacao;
     }
-    public BigDecimal getQuantidade(){
+
+    public BigDecimal getQuantidade() {
         return quantidade;
     }
-    public String getDataValidade(){
+
+    public Date getDataValidade() {
         return dataValidade;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+
     //setter
-    public void setLoteFabrica(String loteFabrica){
-        this.loteFabrica=loteFabrica;
+    public void setLoteFabricacao(String loteFabrica) {
+        this.loteFabricacao = loteFabrica;
     }
-    public void setQuantidade(BigDecimal quantidade){
-        this.quantidade=quantidade;
+
+    public void setQuantidade(BigDecimal quantidade) {
+        this.quantidade = quantidade;
     }
-    public void setDataValidade(String dataValidade){
-        this.dataValidade=dataValidade;
+
+    public void setDataValidade(Date dataValidade) {
+        this.dataValidade = dataValidade;
     }
-    public void setLocalTanque(String localTanque){
-        this.localTanque=localTanque;
+
+    public void setLocalTanque(String localTanque) {
+        this.localTanque = localTanque;
     }
-    public void setLocalEndereco(String localEndereco){
-        this.localEndereco=localEndereco;
 
-
-
-
-
-    
+    public void setLoteEndereco(String localEndereco) {
+        this.localEndereco = localEndereco;
     }
-    //fim
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+}
         
-    }
 
