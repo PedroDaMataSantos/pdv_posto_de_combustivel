@@ -42,13 +42,13 @@ public class Preco {
     public BigDecimal getValor() {
         return valor;
     }
-
     public String getDataAlteracao() {
         return dataAlteracao;
     }
     public Date getHoraAlteracao() {
         return horaAlteracao;
     }
+    public Long getId() {return id;}
     // setters
     public void setValor(BigDecimal valor) {
         this.valor = valor;
@@ -56,10 +56,11 @@ public class Preco {
     public void setDataAlteracao(String dataAlteracao) {
         this.dataAlteracao = dataAlteracao;
     }
-
     public void setHoraAlteracao(Date horaAlteracao) {
         this.horaAlteracao = horaAlteracao;
     }
+
+    public void setId(Long id) {this.id = id;}
     // fim
     
     
