@@ -21,7 +21,7 @@ public class EstoqueService {
 
     @Transactional
     public EstoqueResponse create(EstoqueRequest req) {
-        Estoque estoque = new Estoque(req.quantidade(), req.localTanque(), req.loteEndereco(), req.loteFabricacao(), req.dataValidade());
+        Estoque estoque = new Estoque(req.quantidade(), req.localTanque(), req.loteEndereco(), req.loteFabricacao(), req.dataValidade(),req.tipoEstoque());
         repository.save(estoque);
         return toResponse(estoque);
     }
@@ -64,7 +64,8 @@ public class EstoqueService {
                 estoque.getLocalTanque(),
                 estoque.getLoteEndereco(),
                 estoque.getLoteFabricacao(),
-                estoque.getDataValidade()
+                estoque.getDataValidade(),
+                estoque.getTipoEstoque()
         );
     }
 }

@@ -41,12 +41,13 @@ public class Estoque {
 
     //construtor
 
-    public Estoque(BigDecimal quantidade, String localEndereco, String localTanque, String loteFabricacao, Date dataValidade) {
+    public Estoque(BigDecimal quantidade, String localEndereco, String localTanque, String loteFabricacao, Date dataValidade, TipoEstoque tipo) {
         this.quantidade = quantidade;
         this.localEndereco = localEndereco;
         this.localTanque = localTanque;
         this.loteFabricacao = loteFabricacao;
         this.dataValidade = dataValidade;
+        this.tipo = tipo;
     }
 
     public Estoque() {
@@ -79,8 +80,8 @@ public class Estoque {
     public Long getId() {
         return id;
     }
-    public void setTipo(TipoEstoque tipo) {
-        this.tipo = tipo;
+    public TipoEstoque getTipoEstoque() {
+        return tipo;
     }
 
 
@@ -108,9 +109,12 @@ public class Estoque {
     public void setId(Long id) {
         this.id = id;
     }
-    public TipoEstoque getTipo() {
-        return tipo;
-    }
+    public void setTipoEstoque(TipoEstoque tipo) {
+        this.tipo = tipo;
+
 }
-        
+
+
+}
+
 
