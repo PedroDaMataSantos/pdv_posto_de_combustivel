@@ -45,6 +45,7 @@ public class EstoqueService {
         estoque.setLoteEndereco(req.loteEndereco());
         estoque.setLoteFabricacao(req.loteFabricacao());
         estoque.setDataValidade(req.dataValidade());
+        estoque.setTipo(req.tipo());
         repository.save(estoque);
         return toResponse(estoque);
     }

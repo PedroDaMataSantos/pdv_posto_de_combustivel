@@ -27,6 +27,7 @@ public class Estoque {
     @Column(length = 200, nullable = false)
     private String loteFabricacao;
 
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date dataValidade;
 
