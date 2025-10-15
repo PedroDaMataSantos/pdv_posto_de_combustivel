@@ -1,14 +1,15 @@
 package com.br.pdvpostocombustivel.enums;
 
-public enum TipoAcesso {
+public enum TipoEstoque {
 
-    OPERADOR_CAIXA("Operador de Caixa"),
-    GERENTE("Gerente"),
-    ADMIN("Administrador");
+    OK("Em estoque"),
+    BAIXO("Estoque baixo"),
+    CRITICO("Estoque crítico"),
+    INDISPONIVEL("Indisponível");
 
     private final String descricao;
 
-    private TipoAcesso(String descricao) {
+    private TipoEstoque(String descricao) {
         this.descricao = descricao;
     }
 

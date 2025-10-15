@@ -16,10 +16,8 @@ public class AcessoService {
     }
 
     public AcessoResponse registrar(AcessoRequest req) {
-        // A senha da requisição é salva diretamente, sem criptografar
-        Acesso novoAcesso = new Acesso(req.usuiario(), req.senha());
-
+        Acesso novoAcesso = new Acesso(req.usuiario(), req.senha(), req.perfil());
         repository.save(novoAcesso);
-        return new AcessoResponse(novoAcesso.getId(), novoAcesso.getUsuario());
+        return new AcessoResponse(novoAcesso.getId(), novoAcesso.getUsuario(), novoAcesso.getPerfil());
     }
 }
