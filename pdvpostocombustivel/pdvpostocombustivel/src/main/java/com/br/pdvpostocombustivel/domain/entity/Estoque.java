@@ -9,112 +9,98 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name="estoque")
-
+@Table(name = "estoque")
 public class Estoque {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    // atributos
 
-    @Column(precision = 12, nullable = false)
+    @Column(nullable = false)
     private BigDecimal quantidade;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 200, nullable = false)
     private String localTanque;
 
-    @Column(length = 50, nullable = false)
-    private String localEndereco;
+    @Column(length = 200, nullable = false)
+    private String loteEndereco;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 200, nullable = false)
     private String loteFabricacao;
 
-    @Column(length = 10, nullable = false)
+    @Column(nullable = false)
     private Date dataValidade;
-
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_estoque", nullable = false)
     private TipoEstoque tipo;
 
-    //construtor
-
-    public Estoque(BigDecimal quantidade, String localEndereco, String localTanque, String loteFabricacao, Date dataValidade, TipoEstoque tipo) {
+    public Estoque (BigDecimal quantidade, String localTanque, String loteEndereco, String loteFabricacao, Date dataValidade, TipoEstoque tipo) {
         this.quantidade = quantidade;
-        this.localEndereco = localEndereco;
         this.localTanque = localTanque;
+        this.loteEndereco = loteEndereco;
         this.loteFabricacao = loteFabricacao;
         this.dataValidade = dataValidade;
         this.tipo = tipo;
     }
 
-    public Estoque() {
+    public Estoque () {
 
     }
 
-
-    //getters
-
-    public String getLoteEndereco() {
-        return localEndereco;
+    public Long getId () {
+        return id;
     }
 
-    public String getLocalTanque() {
-        return localTanque;
-    }
-
-    public String getLoteFabricacao() {
-        return loteFabricacao;
-    }
-
-    public BigDecimal getQuantidade() {
+    public BigDecimal getQuantidade () {
         return quantidade;
     }
 
-    public Date getDataValidade() {
+    public String getLocalTanque () {
+        return localTanque;
+    }
+
+    public String getLoteEndereco () {
+        return loteEndereco;
+    }
+
+    public String getLoteFabricacao () {
+        return loteFabricacao;
+    }
+
+    public Date getDataValidade () {
         return dataValidade;
     }
 
-    public Long getId() {
-        return id;
-    }
-    public TipoEstoque getTipoEstoque() {
+    public TipoEstoque getTipo() {
         return tipo;
     }
 
-
-    //setter
-    public void setLoteFabricacao(String loteFabrica) {
-        this.loteFabricacao = loteFabrica;
-    }
-
-    public void setQuantidade(BigDecimal quantidade) {
+    public void setQuantidade (BigDecimal quantidade) {
         this.quantidade = quantidade;
     }
 
-    public void setDataValidade(Date dataValidade) {
-        this.dataValidade = dataValidade;
-    }
-
-    public void setLocalTanque(String localTanque) {
+    public void setLocalTanque (String localTanque) {
         this.localTanque = localTanque;
     }
 
-    public void setLoteEndereco(String localEndereco) {
-        this.localEndereco = localEndereco;
+    public void setLoteEndereco (String loteEndereco) {
+        this.loteEndereco = loteEndereco;
+    }
+
+    public void setLoteFabricacao (String loteFabricacao) {
+        this.loteFabricacao = loteFabricacao;
+    }
+
+    public void setDataValidade (Date dataValidade) {
+        this.dataValidade = dataValidade;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
-    public void setTipoEstoque(TipoEstoque tipo) {
+
+    public void setTipo(TipoEstoque tipo) {
         this.tipo = tipo;
-
+    }
 }
-
-
-}
-
-

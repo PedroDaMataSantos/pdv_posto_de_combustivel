@@ -1,6 +1,7 @@
 package com.br.pdvpostocombustivel.domain.entity;
 
 
+import com.br.pdvpostocombustivel.enums.TipoProduto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -29,7 +30,7 @@ public class Produto {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_combustivel", nullable = false)
-    
+
     private TipoProduto tipo;
 
     public Produto (String nome, String referencia, String fornecedor, String categoria, String marca, TipoProduto tipo) {

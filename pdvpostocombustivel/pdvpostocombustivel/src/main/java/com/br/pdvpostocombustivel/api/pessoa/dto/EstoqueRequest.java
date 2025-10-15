@@ -11,6 +11,6 @@ public record EstoqueRequest(
         String loteEndereco,
         String loteFabricacao,
         Date dataValidade,
-        TipoEstoque tipoEstoque
+        TipoEstoque tipo
 ) {
 }

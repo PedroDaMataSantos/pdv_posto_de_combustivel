@@ -28,9 +28,10 @@ public class Acesso {
 
     //construtor 
 
-    public Acesso(String usuario, String senha) {
+    public Acesso(String usuario, String senha,TipoAcesso perfil) {
         this.usuario = usuario;
         this.senha = senha;
+        this.perfil = perfil;
     }
 
     public Acesso() {
