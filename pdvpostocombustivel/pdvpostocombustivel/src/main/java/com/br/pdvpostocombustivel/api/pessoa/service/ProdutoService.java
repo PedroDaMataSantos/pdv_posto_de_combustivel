@@ -4,6 +4,7 @@ import com.br.pdvpostocombustivel.api.pessoa.dto.ProdutoRequest;
 import com.br.pdvpostocombustivel.api.pessoa.dto.ProdutoResponse;
 import com.br.pdvpostocombustivel.domain.entity.Produto;
 import com.br.pdvpostocombustivel.domain.repository.ProdutoRepository;
+import com.br.pdvpostocombustivel.exceptions.ProdutoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +36,7 @@ public class ProdutoService {
 
     public ProdutoResponse getById(Long id) {
         Produto produto = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ProdutoException("Produto não encontrado"));
         return toResponse(produto);
     }
 
@@ -48,7 +49,7 @@ public class ProdutoService {
     @Transactional
     public ProdutoResponse update(Long id, ProdutoRequest req) {
         Produto produto = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ProdutoException("Produto não encontrado"));
 
         produto.setNome(req.nome());
         produto.setReferencia(req.referencia());
@@ -63,7 +64,7 @@ public class ProdutoService {
     @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Produto não encontrado");
+            throw new ProdutoException("Produto não encontrado");
         }
         repository.deleteById(id);
     }
