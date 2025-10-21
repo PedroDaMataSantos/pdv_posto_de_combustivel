@@ -5,6 +5,7 @@ import com.br.pdvpostocombustivel.api.pessoa.dto.PessoaRequest;
 import com.br.pdvpostocombustivel.api.pessoa.dto.PessoaResponse;
 import com.br.pdvpostocombustivel.domain.entity.Pessoa;
 import com.br.pdvpostocombustivel.domain.repository.PessoaRepository;
+import com.br.pdvpostocombustivel.exceptions.PessoaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
@@ -33,7 +34,7 @@ public class PessoaService {
     @Transactional(readOnly = true)
     public PessoaResponse getById(Long id) {
         Pessoa p = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Pessoa não encontrada. id=" + id));
+                .orElseThrow(() -> new PessoaException("Pessoa não encontrada. id=" + id));
         return toResponse(p);
     }
 
@@ -41,7 +42,7 @@ public class PessoaService {
     @Transactional(readOnly = true)
     public PessoaResponse getByCpfCnpj(String cpfCnpj) {
         Pessoa p = repository.findByCpfCnpj(cpfCnpj)
-                .orElseThrow(() -> new IllegalArgumentException("Pessoa não encontrada. cpfCnpj=" + cpfCnpj));
+                .orElseThrow(() -> new PessoaException("Pessoa não encontrada. cpfCnpj=" + cpfCnpj));
         return toResponse(p);
     }
 
@@ -55,7 +56,7 @@ public class PessoaService {
     // UPDATE  - substitui todos os campos
     public PessoaResponse update(Long id, PessoaRequest req) {
         Pessoa p = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Pessoa não encontrada. id=" + id));
+                .orElseThrow(() -> new PessoaException("Pessoa não encontrada. id=" + id));
 
         if (req.cpfCnpj() != null && !req.cpfCnpj().equals(p.getCpfCnpj())) {
             validarUnicidadeCpfCnpj(req.cpfCnpj(), id);
@@ -72,7 +73,7 @@ public class PessoaService {
     // PATCH - atualiza apenas campos não nulos
     public PessoaResponse patch(Long id, PessoaRequest req) {
         Pessoa p = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Pessoa não encontrada. id=" + id));
+                .orElseThrow(() -> new PessoaException("Pessoa não encontrada. id=" + id));
 
         if (req.nomeCompleto() != null)  p.setNomeCompleto(req.nomeCompleto());
         if (req.cpfCnpj() != null) {
@@ -90,7 +91,7 @@ public class PessoaService {
     // DELETE
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new IllegalArgumentException("Pessoa não encontrada. id=" + id);
+            throw new PessoaException("Pessoa não encontrada. id=" + id);
         }
         repository.deleteById(id);
     }
@@ -99,7 +100,7 @@ public class PessoaService {
     private void validarUnicidadeCpfCnpj(String cpfCnpj, Long idAtual) {
         repository.findByCpfCnpj(cpfCnpj).ifPresent(existente -> {
             if (idAtual == null || !existente.getId().equals(idAtual)) {
-                throw new DataIntegrityViolationException("CPF/CNPJ já cadastrado: " + cpfCnpj);
+                throw new PessoaException("CPF/CNPJ já cadastrado: " + cpfCnpj);
             }
         });
     }

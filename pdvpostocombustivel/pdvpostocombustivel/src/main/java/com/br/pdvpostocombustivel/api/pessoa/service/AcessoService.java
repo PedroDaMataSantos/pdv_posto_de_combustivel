@@ -16,7 +16,13 @@ public class AcessoService {
     }
 
     public AcessoResponse registrar(AcessoRequest req) {
-        Acesso novoAcesso = new Acesso(req.usuiario(), req.senha(), req.perfil());
+
+        if(repository.existsByusuario(req.usuario())){
+            throw new RuntimeException("Usuário já existe: " + req.usuario());
+        }
+
+
+        Acesso novoAcesso = new Acesso(req.usuario(), req.senha(), req.perfil());
         repository.save(novoAcesso);
         return new AcessoResponse(novoAcesso.getId(), novoAcesso.getUsuario(), novoAcesso.getPerfil());
     }
