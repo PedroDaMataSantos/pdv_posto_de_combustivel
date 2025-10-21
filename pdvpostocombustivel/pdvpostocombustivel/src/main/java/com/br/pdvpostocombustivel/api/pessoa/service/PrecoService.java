@@ -5,6 +5,7 @@ import com.br.pdvpostocombustivel.api.pessoa.dto.PrecoRequest;
 import com.br.pdvpostocombustivel.api.pessoa.dto.PrecoResponse;
 import com.br.pdvpostocombustivel.domain.entity.Preco;
 import com.br.pdvpostocombustivel.domain.repository.PrecoRepository;
+import com.br.pdvpostocombustivel.exceptions.PrecoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -27,7 +28,7 @@ public class PrecoService {
     }
 
     public PrecoResponse getById(Long id) {
-        Preco preco = repository.findById(id).orElseThrow(() -> new RuntimeException("Preço não encontrado"));
+        Preco preco = repository.findById(id).orElseThrow(() -> new PrecoException("Preço não encontrado"));
         return toResponse(preco);
     }
 
@@ -39,7 +40,7 @@ public class PrecoService {
 
     @Transactional
     public PrecoResponse update(Long id, PrecoRequest req) {
-        Preco preco = repository.findById(id).orElseThrow(() -> new RuntimeException("Preço não encontrado"));
+        Preco preco = repository.findById(id).orElseThrow(() -> new PrecoException("Preço não encontrado"));
         preco.setValor(req.valor());
         preco.setDataAlteracao(req.dataAlteracao());
         preco.setHoraAlteracao(req.horaAlteracao());
@@ -50,7 +51,7 @@ public class PrecoService {
     @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Preço não encontrado");
+            throw new PrecoException("Preço não encontrado");
         }
         repository.deleteById(id);
     }

@@ -4,6 +4,7 @@ import com.br.pdvpostocombustivel.api.pessoa.dto.CustoRequest;
 import com.br.pdvpostocombustivel.api.pessoa.dto.CustoResponse;
 import com.br.pdvpostocombustivel.domain.entity.Custo;
 import com.br.pdvpostocombustivel.domain.repository.CustoRepository;
+import com.br.pdvpostocombustivel.exceptions.CustoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class CustoService {
     }
 
     public CustoResponse getById(Long id) {
-        Custo custo = repository.findById(id).orElseThrow(() -> new RuntimeException("Custo não encontrado"));
+        Custo custo = repository.findById(id).orElseThrow(() -> new CustoException("Custo não encontrado"));
         return toResponse(custo);
     }
 
@@ -39,7 +40,7 @@ public class CustoService {
 
     @Transactional
     public CustoResponse update(Long id, CustoRequest req) {
-        Custo custo = repository.findById(id).orElseThrow(() -> new RuntimeException("Custo não encontrado"));
+        Custo custo = repository.findById(id).orElseThrow(() -> new CustoException("Custo não encontrado"));
         custo.setImposto(req.imposto());
         custo.setCustoVariavel(req.custoVariavel());
         custo.setCustoFixo(req.custoFixo());
@@ -52,7 +53,7 @@ public class CustoService {
     @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Custo não encontrado");
+            throw new CustoException("Custo não encontrado");
         }
         repository.deleteById(id);
     }

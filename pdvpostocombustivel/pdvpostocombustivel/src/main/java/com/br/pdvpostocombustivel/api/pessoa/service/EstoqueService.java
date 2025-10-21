@@ -4,6 +4,7 @@ import com.br.pdvpostocombustivel.api.pessoa.dto.EstoqueRequest;
 import com.br.pdvpostocombustivel.api.pessoa.dto.EstoqueResponse;
 import com.br.pdvpostocombustivel.domain.entity.Estoque;
 import com.br.pdvpostocombustivel.domain.repository.EstoqueRepository;
+import com.br.pdvpostocombustivel.exceptions.EstoqueException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class EstoqueService {
     }
 
     public EstoqueResponse getById(Long id) {
-        Estoque estoque = repository.findById(id).orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
+        Estoque estoque = repository.findById(id).orElseThrow(() -> new EstoqueException("Estoque não encontrado"));
         return toResponse(estoque);
     }
 
@@ -39,7 +40,7 @@ public class EstoqueService {
 
     @Transactional
     public EstoqueResponse update(Long id, EstoqueRequest req) {
-        Estoque estoque = repository.findById(id).orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
+        Estoque estoque = repository.findById(id).orElseThrow(() -> new EstoqueException("Estoque não encontrado"));
         estoque.setQuantidade(req.quantidade());
         estoque.setLocalTanque(req.localTanque());
         estoque.setLoteEndereco(req.loteEndereco());
@@ -53,7 +54,7 @@ public class EstoqueService {
     @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Estoque não encontrado");
+            throw new EstoqueException("Estoque não encontrado");
         }
         repository.deleteById(id);
     }

@@ -4,6 +4,7 @@ import com.br.pdvpostocombustivel.api.pessoa.dto.ContatoRequest;
 import com.br.pdvpostocombustivel.api.pessoa.dto.ContatoResponse;
 import com.br.pdvpostocombustivel.domain.entity.Contato;
 import com.br.pdvpostocombustivel.domain.repository.ContatoRepository;
+import com.br.pdvpostocombustivel.exceptions.ContatoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -26,7 +27,7 @@ public class ContatoService {
     }
 
     public ContatoResponse getById(Long id) {
-        Contato contato = repository.findById(id).orElseThrow(() -> new RuntimeException("Contato não encontrado"));
+        Contato contato = repository.findById(id).orElseThrow(() -> new ContatoException("Contato não encontrado"));
         return toResponse(contato);
     }
 
@@ -38,7 +39,7 @@ public class ContatoService {
 
     @Transactional
     public ContatoResponse update(Long id, ContatoRequest req) {
-        Contato contato = repository.findById(id).orElseThrow(() -> new RuntimeException("Contato não encontrado"));
+        Contato contato = repository.findById(id).orElseThrow(() -> new ContatoException("Contato não encontrado"));
         contato.setTelefone(req.telefone());
         contato.setEmail(req.email());
         contato.setEndereco(req.endereco());
@@ -49,7 +50,7 @@ public class ContatoService {
     @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Contato não encontrado");
+            throw new ContatoException("Contato não encontrado");
         }
         repository.deleteById(id);
     }
