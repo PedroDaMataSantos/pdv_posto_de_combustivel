@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Entity
@@ -14,6 +17,8 @@ import java.time.LocalDate;
                 @UniqueConstraint(name = "uk_pessoas_cpf_cnpj", columnNames = "cpf_cnpj")
         }
 )
+@Data
+@NoArgsConstructor
 public class Pessoa {
 
     @Id
@@ -46,7 +51,7 @@ public class Pessoa {
     private TipoPessoa tipoPessoa;
 
     /** Construtor JPA */
-    protected Pessoa() {}
+
 
     public Pessoa(String nomeCompleto,
                   String cpfCnpj,
@@ -60,22 +65,5 @@ public class Pessoa {
         this.tipoPessoa = tipoPessoa;
     }
 
-    // Getters/Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getNomeCompleto() { return nomeCompleto; }
-    public void setNomeCompleto(String nomeCompleto) { this.nomeCompleto = nomeCompleto; }
-
-    public String getCpfCnpj() { return cpfCnpj; }
-    public void setCpfCnpj(String cpfCnpj) { this.cpfCnpj = cpfCnpj; }
-
-    public Long getNumeroCtps() { return numeroCtps; }
-    public void setNumeroCtps(Long numeroCtps) { this.numeroCtps = numeroCtps; }
-
-    public LocalDate getDataNascimento() { return dataNascimento; }
-    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
-
-    public TipoPessoa getTipoPessoa() { return tipoPessoa; }
-    public void setTipoPessoa(TipoPessoa tipoPessoa) { this.tipoPessoa = tipoPessoa; }
 }

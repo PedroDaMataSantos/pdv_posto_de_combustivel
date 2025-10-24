@@ -3,9 +3,14 @@ package com.br.pdvpostocombustivel.domain.entity;
 import com.br.pdvpostocombustivel.enums.TipoAcesso;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="acesso")
+@Data
+@NoArgsConstructor
 public class Acesso {
 
     @Id
@@ -25,56 +30,9 @@ public class Acesso {
     @Column(nullable = false)
     private TipoAcesso perfil;
 
-
-    //construtor 
-
-    public Acesso(String usuario, String senha,TipoAcesso perfil) {
+    public Acesso(String usuario, String senha, TipoAcesso perfil) {
         this.usuario = usuario;
         this.senha = senha;
         this.perfil = perfil;
-    }
-
-    public Acesso() {
-
-    }
-
-
-
-    //getters
-
-    public String getUsuario() {
-        return usuario;
-
-    }
-
-    public String senha() {
-        return senha;
-
-    }
-
-    public void setPerfil(TipoAcesso perfil) {
-        this.perfil = perfil;
-    }
-
-    //setters
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public TipoAcesso getPerfil() {
-        return perfil;
     }
 }

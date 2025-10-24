@@ -11,9 +11,13 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "custo")
+@Data
+@NoArgsConstructor
 public class Custo {
 
     // atributos
@@ -49,60 +53,6 @@ public class Custo {
         this.margemLucro = margemLucro;
         this.dataProcessamento = dataProcessamento;
     }
-    public Custo() {
 
-    }
-
-
-    // getter
-
-    public Double getImposto() {
-        return imposto;
-    }
-
-    public Double getCustoFixo() {
-        return custoFixo;
-    }
-
-    public Double getCustoVariavel() {
-        return custoVariavel;
-    }
-
-    public Double getMargemLucro() {
-        return margemLucro;
-    }
-
-    public Date getDataProcessamento() {
-        return dataProcessamento;
-    }
-
-    public Long getId() {return id;}
-
-
-    // setter
-    public void setImposto(Double imposto) {
-        this.imposto = imposto;
-    }
-
-
-    public void setCustoFixo(Double custoFixo) {
-        this.custoFixo = custoFixo;
-    }
-
-    public void setCustoVariavel(Double custoVariavel) {
-        this.custoVariavel = custoVariavel;
-    }
-
-    public void setMargemLucro(Double margemLucro) {
-        this.margemLucro = margemLucro;
-    }
-
-    public void setDataProcessamento(Date dataProcessamento) {
-        this.dataProcessamento = dataProcessamento;
-    }
-
-    public void setId(Long id) {this.id = id;}
-
-    // FIM
 
 }

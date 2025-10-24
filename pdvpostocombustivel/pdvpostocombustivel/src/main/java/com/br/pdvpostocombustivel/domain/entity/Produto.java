@@ -4,9 +4,13 @@ package com.br.pdvpostocombustivel.domain.entity;
 import com.br.pdvpostocombustivel.enums.TipoProduto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "produto")
+@Data
+@NoArgsConstructor
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -42,63 +46,4 @@ public class Produto {
         this.tipo = tipo;
     }
 
-    public Produto () {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome () {
-        return nome;
-    }
-
-    public String getReferencia () {
-        return referencia;
-    }
-
-    public String getFornecedor () {
-        return fornecedor;
-    }
-
-    public String getCategoria () {
-        return categoria;
-    }
-
-    public String getMarca () {
-        return marca;
-    }
-
-    public TipoProduto getTipo() {
-        return tipo;
-    }
-
-    public void setNome (String nome) {
-        this.nome = nome;
-    }
-
-    public void setReferencia (String referencia) {
-        this.referencia = referencia;
-    }
-
-    public void setFornecedor (String fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-
-    public void setCategoria (String categoria) {
-        this.categoria = categoria;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTipo(TipoProduto tipo) {
-        this.tipo = tipo;
-    }
 }

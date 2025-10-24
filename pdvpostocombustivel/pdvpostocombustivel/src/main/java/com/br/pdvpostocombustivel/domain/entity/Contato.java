@@ -1,9 +1,13 @@
 package com.br.pdvpostocombustivel.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "contato")
+@Data
+@NoArgsConstructor
 public class Contato {
     //atributos
     @Id
@@ -25,31 +29,5 @@ public class Contato {
         this.email = email;
         this.endereco = endereco;
     }
-    public Contato() {
 
-    }
-    //getters
-    public String getTelefone() {
-        return telefone;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public String getEndereco() {
-        return endereco;
-    }
-    public Long getId() {return id;}
-    //setters
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-    public void setId(Long id) {this.id = id;}
-    //fim
-    
 }
