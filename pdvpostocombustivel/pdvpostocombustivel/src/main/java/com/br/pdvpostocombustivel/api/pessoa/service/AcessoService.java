@@ -21,7 +21,6 @@ public class AcessoService {
             throw new RuntimeException("Usuário já existe: " + req.usuario());
         }
 
-
         Acesso novoAcesso = new Acesso(req.usuario(), req.senha(), req.perfil());
         repository.save(novoAcesso);
         return new AcessoResponse(novoAcesso.getId(), novoAcesso.getUsuario(), novoAcesso.getPerfil());
