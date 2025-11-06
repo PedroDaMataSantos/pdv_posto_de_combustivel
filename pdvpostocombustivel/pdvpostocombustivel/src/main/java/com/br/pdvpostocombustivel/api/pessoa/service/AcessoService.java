@@ -5,6 +5,7 @@ import com.br.pdvpostocombustivel.api.pessoa.dto.AcessoResponse;
 import com.br.pdvpostocombustivel.domain.entity.Acesso;
 import com.br.pdvpostocombustivel.domain.repository.AcessoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AcessoService {
@@ -15,6 +16,7 @@ public class AcessoService {
         this.repository = repository;
     }
 
+    @Transactional
     public AcessoResponse registrar(AcessoRequest req) {
 
         if(repository.existsByusuario(req.usuario())){
@@ -24,5 +26,13 @@ public class AcessoService {
         Acesso novoAcesso = new Acesso(req.usuario(), req.senha(), req.perfil());
         repository.save(novoAcesso);
         return new AcessoResponse(novoAcesso.getId(), novoAcesso.getUsuario(), novoAcesso.getPerfil());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Acesso não encontrado");
+        }
+        repository.deleteById(id);
     }
 }
