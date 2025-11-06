@@ -6,6 +6,8 @@ import com.br.pdvpostocombustivel.api.pessoa.service.AcessoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/acessos")
 public class AcessoController {
@@ -20,6 +22,11 @@ public class AcessoController {
     @ResponseStatus(HttpStatus.CREATED)
     public AcessoResponse registrar(@RequestBody AcessoRequest req) {
         return service.registrar(req);
+    }
+
+    @GetMapping
+    public List<AcessoResponse> list() {
+        return service.listAll();
     }
 
     @DeleteMapping("/{id}")

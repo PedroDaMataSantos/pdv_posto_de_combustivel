@@ -7,6 +7,9 @@ import com.br.pdvpostocombustivel.domain.repository.AcessoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AcessoService {
 
@@ -26,6 +29,12 @@ public class AcessoService {
         Acesso novoAcesso = new Acesso(req.usuario(), req.senha(), req.perfil());
         repository.save(novoAcesso);
         return new AcessoResponse(novoAcesso.getId(), novoAcesso.getUsuario(), novoAcesso.getPerfil());
+    }
+
+    public List<AcessoResponse> listAll() {
+        return repository.findAll().stream()
+                .map(a -> new AcessoResponse(a.getId(), a.getUsuario(), a.getPerfil()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
