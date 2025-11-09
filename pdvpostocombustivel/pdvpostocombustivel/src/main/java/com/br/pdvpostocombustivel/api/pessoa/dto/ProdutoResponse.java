@@ -11,5 +11,6 @@ public record ProdutoResponse(
         String marca,
         TipoProduto tipoProduto
 
+
       ) {
 }

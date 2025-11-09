@@ -1,10 +1,10 @@
 package com.br.pdvpostocombustivel.domain.entity;
 
-//imports
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.br.pdvpostocombustivel.enums.TipoEstoque;
+import com.br.pdvpostocombustivel.enums.TipoProduto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -39,6 +39,11 @@ public class Estoque {
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_combustivel", nullable = false)
+    private TipoProduto tipoCombustivel;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_estoque", nullable = false)
     private TipoEstoque tipo;
 
@@ -46,21 +51,24 @@ public class Estoque {
     @JoinColumn(name = "id_produto", nullable = false, unique = true)
     private Produto produto;
 
-    public Estoque (BigDecimal quantidade, String localTanque, String loteEndereco, String loteFabricacao, Date dataValidade, TipoEstoque tipo,Produto produto) {
+    public Estoque(BigDecimal quantidade, String localTanque, String loteEndereco,
+                   String loteFabricacao, Date dataValidade, TipoCombustivel tipoCombustivel,
+                   TipoEstoque tipo, Produto produto) {
         this.quantidade = quantidade;
         this.localTanque = localTanque;
         this.loteEndereco = loteEndereco;
         this.loteFabricacao = loteFabricacao;
         this.dataValidade = dataValidade;
+        this.tipoCombustivel = tipoCombustivel;
         this.tipo = tipo;
         this.produto = produto;
     }
+
     public static TipoEstoque calcularTipo(BigDecimal quantidade) {
         if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) == 0) {
             return TipoEstoque.INDISPONIVEL;
         }
 
-        // Calcula o percentual
         BigDecimal percentual = quantidade
                 .multiply(new BigDecimal("100"))
                 .divide(LIMITE_TANQUE, 2, BigDecimal.ROUND_HALF_UP);
@@ -76,7 +84,6 @@ public class Estoque {
         }
     }
 
-    // METODO PARA CALCULAR PERCENTUAL
     public BigDecimal calcularPercentual() {
         if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) == 0) {
             return BigDecimal.ZERO;
@@ -86,4 +93,3 @@ public class Estoque {
                 .divide(LIMITE_TANQUE, 2, BigDecimal.ROUND_HALF_UP);
     }
 }
-
