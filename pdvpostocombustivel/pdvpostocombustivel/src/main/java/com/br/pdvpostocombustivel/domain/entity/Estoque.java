@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Estoque {
+    public static final BigDecimal LIMITE_TANQUE = new BigDecimal("60000");
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -40,13 +42,48 @@ public class Estoque {
     @Column(name = "tipo_estoque", nullable = false)
     private TipoEstoque tipo;
 
-    public Estoque (BigDecimal quantidade, String localTanque, String loteEndereco, String loteFabricacao, Date dataValidade, TipoEstoque tipo) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_produto", nullable = false, unique = true)
+    private Produto produto;
+
+    public Estoque (BigDecimal quantidade, String localTanque, String loteEndereco, String loteFabricacao, Date dataValidade, TipoEstoque tipo,Produto produto) {
         this.quantidade = quantidade;
         this.localTanque = localTanque;
         this.loteEndereco = loteEndereco;
         this.loteFabricacao = loteFabricacao;
         this.dataValidade = dataValidade;
         this.tipo = tipo;
+        this.produto = produto;
+    }
+    public static TipoEstoque calcularTipo(BigDecimal quantidade) {
+        if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) == 0) {
+            return TipoEstoque.INDISPONIVEL;
+        }
+
+        // Calcula o percentual
+        BigDecimal percentual = quantidade
+                .multiply(new BigDecimal("100"))
+                .divide(LIMITE_TANQUE, 2, BigDecimal.ROUND_HALF_UP);
+
+        if (percentual.compareTo(new BigDecimal("50")) >= 0) {
+            return TipoEstoque.OK;
+        } else if (percentual.compareTo(new BigDecimal("25")) >= 0) {
+            return TipoEstoque.BAIXO;
+        } else if (percentual.compareTo(BigDecimal.ZERO) > 0) {
+            return TipoEstoque.CRITICO;
+        } else {
+            return TipoEstoque.INDISPONIVEL;
+        }
     }
 
+    // METODO PARA CALCULAR PERCENTUAL
+    public BigDecimal calcularPercentual() {
+        if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
+        return quantidade
+                .multiply(new BigDecimal("100"))
+                .divide(LIMITE_TANQUE, 2, BigDecimal.ROUND_HALF_UP);
+    }
 }
+
