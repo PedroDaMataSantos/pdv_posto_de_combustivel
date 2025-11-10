@@ -29,6 +29,11 @@ public class AcessoController {
         return service.listAll();
     }
 
+    @PostMapping("/login")
+    public AcessoResponse login(@RequestBody AcessoRequest req) {
+        return service.autenticar(req.usuario(), req.senha());
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

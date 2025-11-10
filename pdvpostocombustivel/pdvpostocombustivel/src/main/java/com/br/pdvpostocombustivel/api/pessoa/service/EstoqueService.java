@@ -21,7 +21,6 @@ public class EstoqueService {
     private final EstoqueRepository repository;
     private final ProdutoRepository produtoRepository;
 
-    // INJEÇÃO
     public EstoqueService(EstoqueRepository repository, ProdutoRepository produtoRepository) {
         this.repository = repository;
         this.produtoRepository = produtoRepository;
@@ -32,11 +31,9 @@ public class EstoqueService {
 
         validarQuantidade(req.quantidade());
 
-        // Busca o produto
         Produto produto = produtoRepository.findById(req.idProduto())
                 .orElseThrow(() -> new EstoqueException("Produto não encontrado"));
 
-        // Calcula o tipo de estoque
         TipoEstoque tipoCalculado = Estoque.calcularTipo(req.quantidade());
 
         Estoque estoque = new Estoque(
@@ -107,7 +104,9 @@ public class EstoqueService {
                 estoque.getLoteFabricacao(),
                 estoque.getDataValidade(),
                 estoque.getTipo(),
-                estoque.getProduto().getId()   // Exibe o ID do produto
+                estoque.getProduto().getId()
+
+
         );
     }
 
@@ -122,8 +121,7 @@ public class EstoqueService {
 
         if (quantidade.compareTo(Estoque.LIMITE_TANQUE) > 0) {
             throw new EstoqueException(
-                    "Quantidade não pode ultrapassar o limite do tanque de "
-                            + Estoque.LIMITE_TANQUE + " litros"
+                    "Quantidade não pode ultrapassar o limite do tanque de " + Estoque.LIMITE_TANQUE + " litros"
             );
         }
     }

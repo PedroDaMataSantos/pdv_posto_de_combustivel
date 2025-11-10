@@ -37,10 +37,6 @@ public class Estoque {
     @Column(nullable = false)
     private Date dataValidade;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_combustivel", nullable = false)
-    private TipoProduto tipoCombustivel;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -52,14 +48,13 @@ public class Estoque {
     private Produto produto;
 
     public Estoque(BigDecimal quantidade, String localTanque, String loteEndereco,
-                   String loteFabricacao, Date dataValidade, TipoCombustivel tipoCombustivel,
+                   String loteFabricacao, Date dataValidade,
                    TipoEstoque tipo, Produto produto) {
         this.quantidade = quantidade;
         this.localTanque = localTanque;
         this.loteEndereco = loteEndereco;
         this.loteFabricacao = loteFabricacao;
         this.dataValidade = dataValidade;
-        this.tipoCombustivel = tipoCombustivel;
         this.tipo = tipo;
         this.produto = produto;
     }

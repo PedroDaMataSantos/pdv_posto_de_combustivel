@@ -12,8 +12,7 @@ public record EstoqueRequest(
         String loteEndereco,
         String loteFabricacao,
         Date dataValidade,
-        Long idProduto,
-        TipoProduto tipoCombustivel
+        Long idProduto
 
 ) {
 }

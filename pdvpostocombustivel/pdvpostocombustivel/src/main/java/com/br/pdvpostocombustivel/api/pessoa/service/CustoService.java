@@ -22,13 +22,23 @@ public class CustoService {
 
     @Transactional
     public CustoResponse create(CustoRequest req) {
-        Custo custo = new Custo(req.imposto(), req.custoVariavel(), req.custoFixo(),req.margemLucro(), req.dataProcessameto());
+        double aliquota = calcularAliquota(req.margemLucro());
+
+        Custo custo = new Custo(
+                aliquota,
+                req.custoVariavel(),
+                req.custoFixo(),
+                req.margemLucro(),
+                req.dataProcessamento()
+        );
+
         repository.save(custo);
         return toResponse(custo);
     }
 
     public CustoResponse getById(Long id) {
-        Custo custo = repository.findById(id).orElseThrow(() -> new CustoException("Custo não encontrado"));
+        Custo custo = repository.findById(id)
+                .orElseThrow(() -> new CustoException("Custo não encontrado"));
         return toResponse(custo);
     }
 
@@ -40,12 +50,17 @@ public class CustoService {
 
     @Transactional
     public CustoResponse update(Long id, CustoRequest req) {
-        Custo custo = repository.findById(id).orElseThrow(() -> new CustoException("Custo não encontrado"));
-        custo.setImposto(req.imposto());
+        Custo custo = repository.findById(id)
+                .orElseThrow(() -> new CustoException("Custo não encontrado"));
+
+        double aliquota = calcularAliquota(req.margemLucro());
+
+        custo.setImposto(aliquota);
         custo.setCustoVariavel(req.custoVariavel());
         custo.setCustoFixo(req.custoFixo());
         custo.setMargemLucro(req.margemLucro());
-        custo.setDataProcessamento(req.dataProcessameto());
+        custo.setDataProcessamento(req.dataProcessamento());
+
         repository.save(custo);
         return toResponse(custo);
     }
@@ -67,5 +82,12 @@ public class CustoService {
                 custo.getMargemLucro(),
                 custo.getDataProcessamento()
         );
+    }
+
+    private double calcularAliquota(Double margemLucro) {
+        if (margemLucro == null || margemLucro <= 0) {
+            return 0.0; // sem incidência
+        }
+        return 0.15; // 15% fixos (CSSL)
     }
 }
