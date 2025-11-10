@@ -20,10 +20,16 @@ public class EstoqueService {
 
     private final EstoqueRepository repository;
     private final ProdutoRepository produtoRepository;
+    private final BombaService bombaService; // ✅ nova dependência
 
-    public EstoqueService(EstoqueRepository repository, ProdutoRepository produtoRepository) {
+    public EstoqueService(
+            EstoqueRepository repository,
+            ProdutoRepository produtoRepository,
+            BombaService bombaService
+    ) {
         this.repository = repository;
         this.produtoRepository = produtoRepository;
+        this.bombaService = bombaService;
     }
 
     @Transactional
@@ -48,6 +54,14 @@ public class EstoqueService {
         );
 
         repository.save(estoque);
+
+        // ✅ Cria automaticamente a bomba para este estoque
+        try {
+            bombaService.criarBombaParaEstoque(estoque);
+        } catch (Exception e) {
+            throw new EstoqueException("Erro ao criar bomba vinculada ao estoque: " + e.getMessage());
+        }
+
         return toResponse(estoque);
     }
 
