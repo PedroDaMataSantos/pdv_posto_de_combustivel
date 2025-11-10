@@ -5,6 +5,7 @@ import com.br.pdvpostocombustivel.api.pessoa.dto.PrecoResponse;
 import com.br.pdvpostocombustivel.api.pessoa.service.PrecoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -42,5 +43,11 @@ public class PrecoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    // ✅ NOVO ENDPOINT: buscar preço atual de um produto
+    @GetMapping("/atual/{idProduto}")
+    public PrecoResponse getPrecoAtual(@PathVariable Long idProduto) {
+        return service.buscarPrecoAtual(idProduto);
     }
 }
