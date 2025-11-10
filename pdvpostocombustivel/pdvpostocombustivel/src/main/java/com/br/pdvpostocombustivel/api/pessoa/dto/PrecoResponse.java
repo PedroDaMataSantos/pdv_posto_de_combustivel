@@ -7,6 +7,6 @@ public record PrecoResponse(
         Long id,
         BigDecimal valor,
         String dataAlteracao,
-        Date horaAlteracao
-) {
-}
+        Date horaAlteracao,
+        Long idProduto
+) {}

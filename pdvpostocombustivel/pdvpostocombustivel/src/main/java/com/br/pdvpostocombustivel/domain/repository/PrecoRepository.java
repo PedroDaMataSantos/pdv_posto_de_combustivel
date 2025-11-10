@@ -1,12 +1,18 @@
 package com.br.pdvpostocombustivel.domain.repository;
-import java.util.Optional;
+
 import com.br.pdvpostocombustivel.domain.entity.Preco;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
 public interface PrecoRepository extends JpaRepository<Preco, Long> {
-    Optional<Preco> findByDataAlteracao(String dataAlteracao);
 
-    boolean existsByDataAlteracao(String dataAlteracao);
+    @Query("""
+        SELECT p FROM Preco p
+        WHERE p.produto.id = :idProduto
+        ORDER BY p.horaAlteracao DESC
+        LIMIT 1
+    """)
+    Optional<Preco> findPrecoAtual(Long idProduto);
 }

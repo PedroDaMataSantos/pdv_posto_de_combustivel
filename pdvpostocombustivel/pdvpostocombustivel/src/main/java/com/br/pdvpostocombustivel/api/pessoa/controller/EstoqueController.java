@@ -20,23 +20,23 @@ public class EstoqueController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EstoqueResponse create(@RequestBody EstoqueRequest req) {
-        return service.create(req);
+    public EstoqueResponse create(@RequestBody EstoqueRequest request) {
+        return service.create(request);
     }
 
     @GetMapping("/{id}")
-    public EstoqueResponse get(@PathVariable Long id) {
+    public EstoqueResponse getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @GetMapping
-    public List<EstoqueResponse> list() {
+    public List<EstoqueResponse> listAll() {
         return service.listAll();
     }
 
     @PutMapping("/{id}")
-    public EstoqueResponse update(@PathVariable Long id, @RequestBody EstoqueRequest req) {
-        return service.update(id, req);
+    public EstoqueResponse update(@PathVariable Long id, @RequestBody EstoqueRequest request) {
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")
