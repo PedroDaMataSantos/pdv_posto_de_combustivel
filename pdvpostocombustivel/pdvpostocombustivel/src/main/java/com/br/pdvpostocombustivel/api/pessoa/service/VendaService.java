@@ -36,23 +36,29 @@ public class VendaService {
         Venda venda = new Venda(req.tipoVenda());
 
         for (ItemVendaRequest itemReq : req.itens()) {
-            Produto produto = produtoRepository.findById(itemReq.produtoId())
-                    .orElseThrow(() -> new VendaException("Produto não encontrado. ID=" + itemReq.produtoId()));
+
+
+            Produto produto = produtoRepository.findById(itemReq.idProduto())
+                    .orElseThrow(() -> new VendaException("Produto não encontrado. ID=" + itemReq.idProduto()));
+
 
             Estoque estoque = estoqueRepository.findByProdutoId(produto.getId())
                     .orElseThrow(() -> new VendaException("Não há estoque vinculado ao produto: " + produto.getNome()));
+
 
             if (estoque.getQuantidade().compareTo(itemReq.quantidade()) < 0) {
                 throw new VendaException("Estoque insuficiente para o produto: " + produto.getNome());
             }
 
-            // desconta do estoque
+
             estoque.setQuantidade(estoque.getQuantidade().subtract(itemReq.quantidade()));
             estoqueRepository.save(estoque);
+
 
             ItemVenda item = new ItemVenda(produto, itemReq.quantidade(), itemReq.valorUnitario());
             venda.adicionarItem(item);
         }
+
 
         venda.recalcularTotal();
         vendaRepository.save(venda);
@@ -63,7 +69,8 @@ public class VendaService {
     private VendaResponse toResponse(Venda v) {
         List<ItemVendaResponse> itens = v.getItens().stream()
                 .map(i -> new ItemVendaResponse(
-                        i.getProduto().getNome(),
+                        i.getId(),
+                        i.getProduto().getId(),
                         i.getQuantidade(),
                         i.getValorUnitario(),
                         i.getSubtotal()
@@ -81,6 +88,8 @@ public class VendaService {
 
     @Transactional(readOnly = true)
     public List<VendaResponse> listAll() {
-        return vendaRepository.findAll().stream().map(this::toResponse).collect(Collectors.toList());
+        return vendaRepository.findAll().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 }

@@ -8,8 +8,8 @@ import com.br.pdvpostocombustivel.domain.repository.EstoqueRepository;
 import com.br.pdvpostocombustivel.domain.repository.ProdutoRepository;
 import com.br.pdvpostocombustivel.enums.TipoEstoque;
 import com.br.pdvpostocombustivel.exceptions.EstoqueException;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,7 +20,7 @@ public class EstoqueService {
 
     private final EstoqueRepository repository;
     private final ProdutoRepository produtoRepository;
-    private final BombaService bombaService; // ✅ nova dependência
+    private final BombaService bombaService;
 
     public EstoqueService(
             EstoqueRepository repository,
@@ -55,7 +55,6 @@ public class EstoqueService {
 
         repository.save(estoque);
 
-        // ✅ Cria automaticamente a bomba para este estoque
         try {
             bombaService.criarBombaParaEstoque(estoque);
         } catch (Exception e) {
@@ -102,15 +101,31 @@ public class EstoqueService {
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public EstoqueResponse getById(Long id) {
         Estoque estoque = repository.findById(id)
                 .orElseThrow(() -> new EstoqueException("Estoque não encontrado."));
+
+        Produto produto = estoque.getProduto();
+        if (produto != null) {
+            produto.getId();
+            produto.getNome();
+        }
+
         return toResponse(estoque);
     }
 
+    @Transactional(readOnly = true)
     public List<EstoqueResponse> listAll() {
         return repository.findAll().stream()
-                .map(this::toResponse)
+                .map(e -> {
+                    Produto p = e.getProduto();
+                    if (p != null) {
+                        p.getId();
+                        p.getNome();
+                    }
+                    return toResponse(e);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -132,6 +147,7 @@ public class EstoqueService {
     }
 
     private EstoqueResponse toResponse(Estoque estoque) {
+        Produto produto = estoque.getProduto();
         return new EstoqueResponse(
                 estoque.getId(),
                 estoque.getNumeroBomba(),
@@ -141,8 +157,8 @@ public class EstoqueService {
                 estoque.getLoteFabricacao(),
                 estoque.getDataValidade(),
                 estoque.getTipo(),
-                estoque.getProduto().getId(),
-                estoque.getProduto().getNome()
+                produto != null ? produto.getId() : null,
+                produto != null ? produto.getNome() : null
         );
     }
 }

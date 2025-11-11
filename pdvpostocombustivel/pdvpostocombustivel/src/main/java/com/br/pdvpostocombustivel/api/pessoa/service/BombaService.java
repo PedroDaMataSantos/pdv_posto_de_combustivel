@@ -3,16 +3,23 @@ package com.br.pdvpostocombustivel.api.pessoa.service;
 import com.br.pdvpostocombustivel.api.pessoa.dto.BombaResponse;
 import com.br.pdvpostocombustivel.domain.entity.Bomba;
 import com.br.pdvpostocombustivel.domain.entity.Estoque;
+import com.br.pdvpostocombustivel.domain.entity.Preco;
+import com.br.pdvpostocombustivel.domain.entity.Produto;
 import com.br.pdvpostocombustivel.domain.repository.BombaRepository;
 import com.br.pdvpostocombustivel.domain.repository.PrecoRepository;
 import com.br.pdvpostocombustivel.exceptions.BombaException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Serviço responsável pelo gerenciamento das bombas de combustível,
+ * incluindo criação automática vinculada ao estoque e consulta de dados.
+ */
 @Service
 public class BombaService {
 
@@ -26,6 +33,8 @@ public class BombaService {
 
     /**
      * Cria uma bomba automaticamente a partir de um estoque recém-criado.
+     *
+     * @param estoque entidade de estoque vinculada ao produto.
      */
     @Transactional
     public void criarBombaParaEstoque(Estoque estoque) {
@@ -33,13 +42,15 @@ public class BombaService {
             throw new BombaException("Estoque ou produto inválido para criação da bomba.");
         }
 
-        // Evita duplicidade
+        // Evita duplicidade de bombas para o mesmo estoque
         if (bombaRepository.existsByEstoqueId(estoque.getId())) {
             throw new BombaException("Já existe uma bomba vinculada a este estoque.");
         }
 
-        // Busca o preço atual do produto, se existir
-        var precoOpt = precoRepository.findTopByProdutoIdOrderByHoraAlteracaoDesc(estoque.getProduto().getId());
+        // Busca o preço mais recente do produto, se existir
+        var precoOpt = precoRepository.findTopByProdutoIdOrderByHoraAlteracaoDesc(
+                estoque.getProduto().getId()
+        );
 
         Bomba bomba = new Bomba();
         bomba.setNumeroBomba("BOMBA-" + estoque.getNumeroBomba());
@@ -51,38 +62,50 @@ public class BombaService {
     }
 
     /**
-     * Retorna todas as bombas registradas.
+     * Lista todas as bombas cadastradas no sistema,
+     * com produto, estoque e valor de preço atual.
+     *
+     * @return lista de {@link BombaResponse}.
      */
+    @Transactional(readOnly = true)
     public List<BombaResponse> listarTodas() {
-        return bombaRepository.findAll().stream()
-                .map(b -> new BombaResponse(
-                        b.getId(),
-                        b.getNumeroBomba(),
-                        b.getEstoque() != null ? b.getEstoque().getId() : null,
-                        b.getEstoque() != null && b.getEstoque().getProduto() != null
-                                ? b.getEstoque().getProduto().getNome()
-                                : null,
-                        b.getPreco() != null ? b.getPreco().getId() : null,
-                        b.getDataCriacao()
-                ))
+        return bombaRepository.findAll()
+                .stream()
+                .map(this::toResponse)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Busca uma bomba pelo ID.
+     * Busca uma bomba específica pelo seu ID.
+     *
+     * @param id identificador da bomba.
+     * @return {@link BombaResponse} correspondente.
      */
+    @Transactional(readOnly = true)
     public BombaResponse buscarPorId(Long id) {
-        var bomba = bombaRepository.findById(id)
+        Bomba bomba = bombaRepository.findById(id)
                 .orElseThrow(() -> new BombaException("Bomba não encontrada."));
+        return toResponse(bomba);
+    }
+
+    /**
+     * Converte uma entidade {@link Bomba} para {@link BombaResponse}.
+     *
+     * @param bomba entidade original.
+     * @return DTO com os dados prontos para resposta.
+     */
+    private BombaResponse toResponse(Bomba bomba) {
+        Estoque estoque = bomba.getEstoque();
+        Produto produto = estoque != null ? estoque.getProduto() : null;
+        Preco preco = bomba.getPreco();
 
         return new BombaResponse(
                 bomba.getId(),
                 bomba.getNumeroBomba(),
-                bomba.getEstoque() != null ? bomba.getEstoque().getId() : null,
-                bomba.getEstoque() != null && bomba.getEstoque().getProduto() != null
-                        ? bomba.getEstoque().getProduto().getNome()
-                        : null,
-                bomba.getPreco() != null ? bomba.getPreco().getId() : null,
+                estoque != null ? estoque.getId() : null,
+                produto != null ? produto.getNome() : null,
+                preco != null ? preco.getId() : null,
+                preco != null ? preco.getValor() : null,
                 bomba.getDataCriacao()
         );
     }

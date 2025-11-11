@@ -1,9 +1,11 @@
+
 package com.br.pdvpostocombustivel.api.pessoa.dto;
 
 import java.math.BigDecimal;
 
 public record ItemVendaRequest(
-        Long produtoId,
+        Long idProduto,
         BigDecimal quantidade,
-        BigDecimal valorUnitario
+        BigDecimal valorUnitario,
+        BigDecimal subtotal
 ) {}
