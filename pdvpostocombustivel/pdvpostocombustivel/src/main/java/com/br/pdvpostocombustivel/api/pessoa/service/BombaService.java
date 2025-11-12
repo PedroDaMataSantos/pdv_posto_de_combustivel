@@ -11,15 +11,10 @@ import com.br.pdvpostocombustivel.exceptions.BombaException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Serviço responsável pelo gerenciamento das bombas de combustível,
- * incluindo criação automática vinculada ao estoque e consulta de dados.
- */
 @Service
 public class BombaService {
 
@@ -31,42 +26,35 @@ public class BombaService {
         this.precoRepository = precoRepository;
     }
 
-    /**
-     * Cria uma bomba automaticamente a partir de um estoque recém-criado.
-     *
-     * @param estoque entidade de estoque vinculada ao produto.
-     */
     @Transactional
     public void criarBombaParaEstoque(Estoque estoque) {
         if (estoque == null || estoque.getProduto() == null) {
             throw new BombaException("Estoque ou produto inválido para criação da bomba.");
         }
 
-        // Evita duplicidade de bombas para o mesmo estoque
         if (bombaRepository.existsByEstoqueId(estoque.getId())) {
             throw new BombaException("Já existe uma bomba vinculada a este estoque.");
         }
 
-        // Busca o preço mais recente do produto, se existir
         var precoOpt = precoRepository.findTopByProdutoIdOrderByHoraAlteracaoDesc(
                 estoque.getProduto().getId()
         );
 
         Bomba bomba = new Bomba();
-        bomba.setNumeroBomba("BOMBA-" + estoque.getNumeroBomba());
+        bomba.setNumeroBomba(gerarProximoNumeroBomba());
         bomba.setEstoque(estoque);
         bomba.setPreco(precoOpt.orElse(null));
         bomba.setDataCriacao(new Date());
 
+        estoque.setBomba(bomba);
         bombaRepository.save(bomba);
     }
 
-    /**
-     * Lista todas as bombas cadastradas no sistema,
-     * com produto, estoque e valor de preço atual.
-     *
-     * @return lista de {@link BombaResponse}.
-     */
+    private String gerarProximoNumeroBomba() {
+        long total = bombaRepository.count() + 1;
+        return "BOMBA-" + total;
+    }
+
     @Transactional(readOnly = true)
     public List<BombaResponse> listarTodas() {
         return bombaRepository.findAll()
@@ -75,12 +63,6 @@ public class BombaService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Busca uma bomba específica pelo seu ID.
-     *
-     * @param id identificador da bomba.
-     * @return {@link BombaResponse} correspondente.
-     */
     @Transactional(readOnly = true)
     public BombaResponse buscarPorId(Long id) {
         Bomba bomba = bombaRepository.findById(id)
@@ -88,12 +70,6 @@ public class BombaService {
         return toResponse(bomba);
     }
 
-    /**
-     * Converte uma entidade {@link Bomba} para {@link BombaResponse}.
-     *
-     * @param bomba entidade original.
-     * @return DTO com os dados prontos para resposta.
-     */
     private BombaResponse toResponse(Bomba bomba) {
         Estoque estoque = bomba.getEstoque();
         Produto produto = estoque != null ? estoque.getProduto() : null;

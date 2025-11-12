@@ -35,23 +35,31 @@ public class EstoqueService {
     @Transactional
     public EstoqueResponse create(EstoqueRequest req) {
         validarQuantidade(req.quantidade());
-        validarNumeroBombaUnico(req.numeroBomba());
 
         Produto produto = produtoRepository.findById(req.idProduto())
                 .orElseThrow(() -> new EstoqueException("Produto não encontrado."));
 
         TipoEstoque tipoCalculado = Estoque.calcularTipo(req.quantidade());
 
-        Estoque estoque = new Estoque(
-                req.numeroBomba(),
-                req.quantidade(),
-                req.localTanque(),
-                req.loteEndereco(),
-                req.loteFabricacao(),
-                req.dataValidade(),
-                tipoCalculado,
-                produto
-        );
+        Estoque estoque = new Estoque();
+        estoque.setQuantidade(req.quantidade());
+        estoque.setLocalTanque(req.localTanque());
+        estoque.setLoteEndereco(req.loteEndereco());
+        estoque.setLoteFabricacao(req.loteFabricacao());
+        estoque.setDataValidade(req.dataValidade());
+        estoque.setTipo(tipoCalculado);
+        estoque.setProduto(produto);
+
+        // 🔹 Número da bomba: usa o informado ou gera automaticamente
+        Integer numeroBomba;
+        if (req.numeroBomba() != null) {
+            numeroBomba = req.numeroBomba();
+            validarNumeroBombaUnico(numeroBomba);
+        } else {
+            numeroBomba = repository.findMaxNumeroBomba().orElse(0) + 1;
+        }
+
+        estoque.setNumeroBomba(numeroBomba);
 
         repository.save(estoque);
 
@@ -74,13 +82,8 @@ public class EstoqueService {
         Produto produto = produtoRepository.findById(req.idProduto())
                 .orElseThrow(() -> new EstoqueException("Produto não encontrado."));
 
-        if (!estoque.getNumeroBomba().equals(req.numeroBomba())) {
-            validarNumeroBombaUnico(req.numeroBomba());
-        }
-
         TipoEstoque tipoCalculado = Estoque.calcularTipo(req.quantidade());
 
-        estoque.setNumeroBomba(req.numeroBomba());
         estoque.setQuantidade(req.quantidade());
         estoque.setLocalTanque(req.localTanque());
         estoque.setLoteEndereco(req.loteEndereco());
@@ -89,52 +92,36 @@ public class EstoqueService {
         estoque.setTipo(tipoCalculado);
         estoque.setProduto(produto);
 
+        // 🔹 Atualiza número da bomba (somente se alterado)
+        if (req.numeroBomba() != null && !req.numeroBomba().equals(estoque.getNumeroBomba())) {
+            validarNumeroBombaUnico(req.numeroBomba());
+            estoque.setNumeroBomba(req.numeroBomba());
+        }
+
         repository.save(estoque);
         return toResponse(estoque);
     }
 
     @Transactional
     public void delete(Long id) {
-        if (!repository.existsById(id)) {
-            throw new EstoqueException("Estoque não encontrado.");
-        }
-        repository.deleteById(id);
+        Estoque estoque = repository.findById(id)
+                .orElseThrow(() -> new EstoqueException("Estoque não encontrado."));
+
+        repository.delete(estoque);
     }
 
     @Transactional(readOnly = true)
     public EstoqueResponse getById(Long id) {
         Estoque estoque = repository.findById(id)
                 .orElseThrow(() -> new EstoqueException("Estoque não encontrado."));
-
-        Produto produto = estoque.getProduto();
-        if (produto != null) {
-            produto.getId();
-            produto.getNome();
-        }
-
         return toResponse(estoque);
     }
 
     @Transactional(readOnly = true)
     public List<EstoqueResponse> listAll() {
         return repository.findAll().stream()
-                .map(e -> {
-                    Produto p = e.getProduto();
-                    if (p != null) {
-                        p.getId();
-                        p.getNome();
-                    }
-                    return toResponse(e);
-                })
+                .map(this::toResponse)
                 .collect(Collectors.toList());
-    }
-
-    private void validarNumeroBombaUnico(Integer numeroBomba) {
-        if (numeroBomba == null)
-            throw new EstoqueException("Número da bomba não pode ser nulo.");
-        repository.findByNumeroBomba(numeroBomba).ifPresent(e -> {
-            throw new EstoqueException("Já existe uma bomba registrada com o número " + numeroBomba);
-        });
     }
 
     private void validarQuantidade(BigDecimal quantidade) {
@@ -146,11 +133,17 @@ public class EstoqueService {
             throw new EstoqueException("Quantidade não pode ultrapassar o limite do tanque de " + Estoque.LIMITE_TANQUE + " litros.");
     }
 
+    private void validarNumeroBombaUnico(Integer numeroBomba) {
+        repository.findByNumeroBomba(numeroBomba).ifPresent(e -> {
+            throw new EstoqueException("Já existe um estoque com o número de bomba " + numeroBomba);
+        });
+    }
+
     private EstoqueResponse toResponse(Estoque estoque) {
         Produto produto = estoque.getProduto();
         return new EstoqueResponse(
                 estoque.getId(),
-                estoque.getNumeroBomba(),
+                estoque.getNumeroBomba(), // ✅ incluído
                 estoque.getQuantidade(),
                 estoque.getLocalTanque(),
                 estoque.getLoteEndereco(),

@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public record EstoqueRequest(
-        Integer numeroBomba,
         BigDecimal quantidade,
         String localTanque,
         String loteEndereco,
@@ -15,5 +14,6 @@ public record EstoqueRequest(
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         Date dataValidade,
         TipoEstoque tipo,
-        Long idProduto
+        Long idProduto,
+        Integer numeroBomba
 ) {}

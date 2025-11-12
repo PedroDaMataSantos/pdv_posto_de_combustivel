@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -19,22 +20,19 @@ public class Bomba {
     private String numeroBomba;
 
     @OneToOne
-    @JoinColumn(name = "estoque_id", nullable = false)
+    @JoinColumn(name = "estoque_id", nullable = false, unique = true)
     private Estoque estoque;
 
     @ManyToOne
-    @JoinColumn(name = "preco_id", nullable = true)
+    @JoinColumn(name = "preco_id")
     private Preco preco;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCriacao = new Date();
-
 
     public Bomba(String numeroBomba, Estoque estoque, Preco preco) {
         this.numeroBomba = numeroBomba;
         this.estoque = estoque;
         this.preco = preco;
     }
-
-
 }

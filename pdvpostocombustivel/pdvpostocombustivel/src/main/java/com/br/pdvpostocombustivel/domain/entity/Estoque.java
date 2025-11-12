@@ -22,6 +22,7 @@ public class Estoque {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    // 🔹 Campo novo e essencial
     @NotNull
     @Column(name = "numero_bomba", nullable = false, unique = true)
     private Integer numeroBomba;
@@ -51,10 +52,12 @@ public class Estoque {
     @JoinColumn(name = "id_produto", nullable = false)
     private Produto produto;
 
-    public Estoque(Integer numeroBomba, BigDecimal quantidade, String localTanque,
+    @OneToOne(mappedBy = "estoque", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Bomba bomba;
+
+    public Estoque(BigDecimal quantidade, String localTanque,
                    String loteEndereco, String loteFabricacao, Date dataValidade,
                    TipoEstoque tipo, Produto produto) {
-        this.numeroBomba = numeroBomba;
         this.quantidade = quantidade;
         this.localTanque = localTanque;
         this.loteEndereco = loteEndereco;
