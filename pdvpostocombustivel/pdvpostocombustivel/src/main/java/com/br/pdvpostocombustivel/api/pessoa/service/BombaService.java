@@ -70,18 +70,16 @@ public class BombaService {
         return toResponse(bomba);
     }
 
-    private BombaResponse toResponse(Bomba bomba) {
-        Estoque estoque = bomba.getEstoque();
-        Produto produto = estoque != null ? estoque.getProduto() : null;
-        Preco preco = bomba.getPreco();
 
+    private BombaResponse toResponse(Bomba bomba) {
         return new BombaResponse(
                 bomba.getId(),
                 bomba.getNumeroBomba(),
-                estoque != null ? estoque.getId() : null,
-                produto != null ? produto.getNome() : null,
-                preco != null ? preco.getId() : null,
-                preco != null ? preco.getValor() : null,
+                bomba.getEstoque().getId(),
+                bomba.getEstoque().getProduto().getId(),  // ✅ ADICIONADO - pega o ID do produto através do estoque
+                bomba.getEstoque().getProduto().getNome(),
+                bomba.getPreco() != null ? bomba.getPreco().getId() : null,
+                bomba.getPreco() != null ? bomba.getPreco().getValor() : null,
                 bomba.getDataCriacao()
         );
     }
