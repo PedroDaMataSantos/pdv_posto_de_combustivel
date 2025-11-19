@@ -22,7 +22,7 @@ public class AcessoService {
     @Transactional
     public AcessoResponse registrar(AcessoRequest req) {
 
-        if (repository.existsByusuario(req.usuario())) {
+        if (repository.existsByUsuario(req.usuario())) {
             throw new RuntimeException("Usuário já existe: " + req.usuario());
         }
 
@@ -46,7 +46,7 @@ public class AcessoService {
     }
 
     public AcessoResponse autenticar(String usuario, String senha) {
-        var acesso = repository.findByusuario(usuario)
+        var acesso = repository.findByUsuario(usuario)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         if (!acesso.getSenha().equals(senha)) {

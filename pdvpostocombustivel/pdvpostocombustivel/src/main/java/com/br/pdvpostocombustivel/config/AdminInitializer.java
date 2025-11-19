@@ -21,7 +21,7 @@ public class AdminInitializer {
         final String senha = "123"; // DEV ONLY
 
         // verifica se já existe usuário 'admin'
-        var existente = acessoRepository.findByusuario(usuario);
+        var existente = acessoRepository.findByUsuario(usuario);
         if (existente.isPresent()) {
             System.out.println("🔸 Usuário ADMIN padrão já existe.");
             return;
